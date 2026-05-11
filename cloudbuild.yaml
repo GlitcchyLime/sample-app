@@ -7,11 +7,6 @@ steps:
   env:
   - 'CLOUDSDK_COMPUTE_ZONE=us-east4-c'
   - 'CLOUDSDK_CONTAINER_CLUSTER=hello-cluster'
-  args:
-  - 'apply'
-  - '-f'
-  - 'prod/deployment.yaml'
-  - '--namespace'
-  - 'prod'
+  args: ['apply', '-f', 'prod/deployment.yaml', '--namespace', 'prod']
 options:
   logging: CLOUD_LOGGING_ONLY
