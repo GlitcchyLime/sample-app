@@ -23,3 +23,7 @@ steps:
   - 'dev/deployment.yaml'
   - '--namespace'
   - 'dev'
+
+# Add this block to fix the Logging error
+options:
+  logging: CLOUD_LOGGING_ONLY
