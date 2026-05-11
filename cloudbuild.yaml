@@ -1,11 +1,23 @@
 steps:
+# Step 1: Build
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild-prod:v1.0', '.']
+  args: ['build', '-t', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/sample-app:v1.0', '.']
+
+# Step 2: Push
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/hello-cloudbuild-prod:v1.0']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['container', 'clusters', 'get-credentials', 'hello-cluster', '--zone', 'us-east4-c']
+  args: ['push', 'us-east4-docker.pkg.dev/$PROJECT_ID/my-repository/sample-app:v1.0']
+
+# Step 3: Deploy with explicit Cluster Context
 - name: 'gcr.io/cloud-builders/kubectl'
-  args: ['apply', '-f', 'prod/deployment.yaml', '--namespace', 'prod']
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-east4-c'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=hello-cluster'
+  args:
+  - 'apply'
+  - '-f'
+  - 'prod/deployment.yaml'
+  - '--namespace'
+  - 'prod'
+
 options:
   logging: CLOUD_LOGGING_ONLY
